@@ -4,7 +4,7 @@ from sqlalchemy import func, desc
 from db.model import InternetUserTable
 from entity.internet_user import InternetUser
 from utility import constant
-from typing import List
+from typing import List, Dict
 
 import logging
 
@@ -29,6 +29,7 @@ def get_country(db: Session, country_: str = constant.DATABASE_COUNTRY_WORLD) ->
 
 def get_all_country(db: Session):
     logger.info("Inside get all country dao.")
+    # res = db.execute("select country from internet_user where country != 'World'")
     res = db.query(InternetUserTable.country).filter(InternetUserTable.country != constant.DATABASE_COUNTRY_WORLD).all()
     countries = []
     for row in res:
@@ -46,8 +47,11 @@ def get_region(db: Session, region_: str = constant.DATABASE_COUNTRY_WORLD) -> I
     :return: internet_user entity
     """
     logger.info("Inside get region dao. Requested region: " + region_)
-    region = db.query(InternetUserTable).filter(func.lower(InternetUserTable.region) == func.lower(region_)).first()
+    region = db.query(InternetUserTable).filter(func.lower(InternetUserTable.region) == func.lower(region_)).all()
     if not region:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'{region_} is not found')
     return region
+
+def get_population(db: Session, start: int, end:int) -> Dict:
+
