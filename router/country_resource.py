@@ -29,3 +29,4 @@ def get_country(country_: str, db: Session = Depends(get_connection)):
 def get_all_country(db: Session = Depends(get_connection)):
     logger.info("Inside get_all_country")
     return dashboard_service.get_all_country(db=db)
+

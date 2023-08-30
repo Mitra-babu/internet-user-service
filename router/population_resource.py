@@ -17,3 +17,5 @@ router = APIRouter(
 def get_population_between(_from: int, _to: int, db: Session = Depends(get_connection)):
     logger.info("inside get_population_between")
     return dashboard_service.get_population(db=db, start=_from, end=_to)
+
+

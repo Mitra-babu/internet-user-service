@@ -27,7 +27,7 @@ def get_country(db: Session, country_: str = constant.DATABASE_COUNTRY_WORLD) ->
     return country
 
 
-def get_all_country(db: Session):
+def get_all_country(db: Session) -> Dict:
     logger.info("Inside get all country dao.")
     # res = db.execute("select country from internet_user where country != 'World'")
     res = db.query(InternetUserTable.country).filter(InternetUserTable.country != constant.DATABASE_COUNTRY_WORLD).all()
@@ -38,7 +38,7 @@ def get_all_country(db: Session):
     return {'country': countries}
 
 
-def get_region(db: Session, region_: str = constant.DATABASE_COUNTRY_WORLD) -> InternetUser:
+def get_region(db: Session, region_: str = constant.DATABASE_COUNTRY_WORLD) -> List[InternetUser]:
     """
     This function returns the internet_user entity mapped with requested region
     name value from inter_user table.
@@ -53,5 +53,19 @@ def get_region(db: Session, region_: str = constant.DATABASE_COUNTRY_WORLD) -> I
                             detail=f'{region_} is not found')
     return region
 
-def get_population(db: Session, start: int, end:int) -> Dict:
+
+def get_population(db: Session, start: int, end: int) -> List[InternetUser]:
+    """
+
+    :param db:
+    :param start:
+    :param end:
+    :return:
+    """
+    country_list = db.query(InternetUserTable).filter(InternetUserTable.population.between(start, end))
+    if not country_list:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"There isn't a nation with a population of between {start} and {end}")
+    return country_list
+
 
