@@ -12,12 +12,12 @@ router = APIRouter(prefix='/region',
 
 
 @router.get('/')
-def get_world(db: Session = Depends(get_connection)):
+async def get_world(db: Session = Depends(get_connection)):
     logger.info("inside get world(region)")
     return dashboard_service.get_region(db)
 
 
 @router.get('/{region_}')
-def get_region(region_: str, db: Session = Depends(get_connection)):
+async def get_region(region_: str, db: Session = Depends(get_connection)):
     logger.info("Inside get region. Requested region : " + region_)
     return dashboard_service.get_region(db, region_)

@@ -44,7 +44,7 @@ def get_region(db: Session, region_: str = constant.DATABASE_COUNTRY_WORLD) -> L
     name value from inter_user table.
     :param db: Session of db connection.
     :param region_: requested region name
-    :return: internet_user entity
+    :return: List of internet_user entity
     """
     logger.info("Inside get region dao. Requested region: " + region_)
     region = db.query(InternetUserTable).filter(func.lower(InternetUserTable.region) == func.lower(region_)).all()
@@ -54,18 +54,21 @@ def get_region(db: Session, region_: str = constant.DATABASE_COUNTRY_WORLD) -> L
     return region
 
 
-def get_population(db: Session, start: int, end: int) -> List[InternetUser]:
+def get_population(db: Session, start: float = 0.00, end: float = 2000000000, on=True) -> \
+        List[InternetUser]:
     """
-
-    :param db:
-    :param start:
-    :param end:
-    :return:
+    This function returns the list of internet_user entity whose population range
+    between start and end provided by user
+    :param db: Session of db connection.
+    :param start: The starting range of population
+    :param end: The ending range of population
+    :param on: Flag to choose the Column condition. True for Population; False for Internet User
+    :return: List of internet_user entity
     """
-    country_list = db.query(InternetUserTable).filter(InternetUserTable.population.between(start, end))
+    logger.info("Inside ")
+    column = InternetUserTable.population if on else InternetUserTable.internet_user
+    country_list = db.query(InternetUserTable).filter(column.between(start, end)).all()
     if not country_list:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"There isn't a nation with a population of between {start} and {end}")
     return country_list
-
-

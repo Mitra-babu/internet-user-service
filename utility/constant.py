@@ -12,3 +12,10 @@ INTERNET_USER_COUNTRY_PERCENTAGE_USER = "percentage_user"
 All value constant in internet user table
 """
 DATABASE_COUNTRY_WORLD = "World"
+
+"""
+utility constant
+"""
+FROM = 'from'
+END = 'end'
+BOTH = 'both'
