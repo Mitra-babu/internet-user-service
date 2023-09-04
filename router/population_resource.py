@@ -16,4 +16,4 @@ router = APIRouter(
 @router.get('/{_from}/{_to}/{_performed_on}')
 async def get_population_between(_from: float, _to: float, db: Session = Depends(get_connection)):
     logger.info("inside get_population_between resource")
-    return dashboard_service.get_population(db=db, start=_from * 1000000, end=_to * 1000000,on = True)
+    return dashboard_service.get_population(db=db, start=_from * 1000000, end=_to * 1000000, on=True)
